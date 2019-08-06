@@ -14,6 +14,8 @@
 
 			<%= render 'books/list',user: @user,book: @book %>
 
+			<%= render 'relationships/follow_button', user: @user %>
+
 		</div>
 		<div class="col-lg-9">
 
@@ -26,6 +28,7 @@
 						<th></th>
 						<th>Title</th>
 						<th>Opinion</th>
+						<th>❤️</th>
 					</tr>
 				</thead>
 
@@ -40,6 +43,7 @@
 						</td>
 						<td><%= link_to book.title, book_path(book) %></td>
 						<td><%= book.body %></td>
+						<td><%= book.favorites.count %></td>
 					</tr>
 				</tbody>
 
