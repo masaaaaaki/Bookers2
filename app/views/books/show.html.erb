@@ -2,6 +2,7 @@
 	<h1>Bookers</h1>
 </div>
 
+
 <p id="notice"><%= notice %></p>
 
 <div class="container">
@@ -45,7 +46,75 @@
 					</tr>
 				</tbody>
 
+
 			</table>
+
+			<% if @book.favorited_by?(current_user) %>
+				<li>
+					<%= link_to book_favorites_path(@book), method: :delete do %>
+						<i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
+			      <%= @book.favorites.count %> いいね
+			    <% end %>
+			  </li>
+			<% else %>
+			  <li>
+			    <%= link_to book_favorites_path(@book), method: :post do %>
+			      <i class="fa fa-heart-o" aria-hidden="true"></i>
+			      <%= @book.favorites.count %> いいね
+			    <% end %>
+			  </li>
+			<% end %>
+
+
+			<table class="table table-hover table-inverse">
+				<h2>コメント 投稿</h2>
+
+				<%= form_for [@book, @post_comment] do |f| %>
+				    <div class="row">
+				        <div class="col-sm-12">
+				            <%= f.text_area :comment, rows:'5', class: "form-control",placeholder: "コメントをここに" %>
+				        </div>
+				    </div>
+				    <%= f.submit "送信する", class: "btn btn-lg btn-base-1 mt-20 pull-right" %>
+				<% end %>
+
+
+				<thead>
+					<tr>
+						<th>ユーザー</th>
+						<th>コメント</th>
+					</tr>
+				</thead>
+
+
+				<tbody>
+					<tr>
+						<% @book.post_comments.each do |postcomment| %>
+
+							<tr>
+								<td>
+									<%= link_to user_path(postcomment.user_id) do %>
+										<%=  attachment_image_tag postcomment.user, :profile_image, format:"jpeg",fallback:"person.jpg", size:"40x40" %>
+									<% end %>
+								</td>
+								<td><%= postcomment.comment %></td>
+
+
+								<% if @book.user == current_user %>
+									<td><%= link_to "Edit", edit_book_post_comment_path(@book,postcomment.id) %></td>
+									<td><%= link_to "Destroy" ,book_post_comment_path(@book,postcomment.id), method: :delete, "data-confirm" =>
+									"本当に削除しますか？" %></td>
+								<% end %>
+							</tr>
+						<% end %>
+					</tr>
+
+				</tbody>
+
+
+			</table>
+
+
 		</div>
 
 	</div>

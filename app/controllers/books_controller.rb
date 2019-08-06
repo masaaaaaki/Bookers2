@@ -7,9 +7,13 @@ before_action :corrent_user, only: [:edit, :update]
 
   end
 
+
   def show
   	@book = Book.find(params[:id])
     @emptybook = Book.new
+
+    @post_comment = PostComment.new
+
   end
 
   def index
@@ -56,6 +60,7 @@ before_action :corrent_user, only: [:edit, :update]
   	redirect_to books_path, notice: "Book was successfully deleted."
 
   end
+
 
   private
 	  def book_params
